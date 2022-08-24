@@ -21,3 +21,5 @@ var/
 /__pycache__
 /.cache
 /.coverage
+
+.env

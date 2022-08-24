@@ -1,21 +1,28 @@
-service: serverless-ping-${opt:ping-name}
+service: serverless-ping-${env:PING_NAME}
+
+useDotenv: true
+
 provider:
   name: aws
-  runtime: python3.6
+  runtime: python3.9
   memorySize: 128
+  region: us-west-2
+  stage: ${opt:stage, 'dev'}
   environment:
     SERVICE_STAGE: ${self:service}-${opt:stage, self:provider.stage}
     PING_METRIC_NAME: ${self:provider.environment.SERVICE_STAGE}
-    PING_ALARM_NAMESPACE: ${opt:ping-alarm-namespace, 'Serverless/Ping'}
-    PING_NAME: ${opt:ping-name}
-    PING_HOST: ${opt:ping-host}
-    PING_ALARM_EMAIL: ${opt:ping-alarm-email}
-    SENTRY_DSN: ${opt:ping-sentry-dsn}
-  iamRoleStatements:
-    - Effect: Allow
-      Action:
-        - cloudwatch:PutMetricData
-      Resource: "*"
+    PING_ALARM_NAMESPACE: ${env:PING_ALARM_NAMESPACE, 'Serverless/Ping'}
+    PING_NAME: ${env:PING_NAME}
+    PING_HOST: ${env:PING_HOST}
+    PING_ALARM_EMAIL: ${env:PING_ALARM_EMAIL}
+    SENTRY_DSN: ${env:PING_SENTRY_DSN, ''}
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - cloudwatch:PutMetricData
+          Resource: '*'
 functions:
   ping:
     handler: handler.ping
