@@ -38,7 +38,7 @@ serverless deploy
 ### Option 2. Pass env variables in the command
 
 ```bash
-PING_NAME=google PING_HOST=https://google.com PING_ALARM_EMAIL=alertme@gmail.com && serverless deploy
+PING_NAME=google PING_HOST=https://google.com PING_ALARM_EMAIL=alertme@gmail.com serverless deploy
 ```
 
 ### Cleanup
